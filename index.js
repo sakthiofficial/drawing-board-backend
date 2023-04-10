@@ -53,7 +53,12 @@ app.get("/drawboard/:id", async (req, res) => {
 })
 app.put("/drawboard/:id", async (req, res) => {
     let result = await client.db("drawboard").collection("canvas").updateOne({ _id: new ObjectId(req.params.id) }, { "$set": req.body })
-    console.log(result);
+    if (result.modifiedCount) {
+        res.status(200).send("Succesfully update")
+    } else {
+        res.status(404).send("Something Wrong")
+
+    }
 })
 app.delete("/drawboard/:id", async (req, res) => {
     let result = await client.db("drawboard").collection("canvas").deleteOne({ _id: ObjectId(req.params.id) })

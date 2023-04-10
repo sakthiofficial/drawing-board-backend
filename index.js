@@ -1,10 +1,14 @@
 import express from "express";
 import { MongoClient, ObjectId } from "mongodb"
 import cors from "cors";
-
+import * as dotenv from 'dotenv';
+dotenv.config()
 let app = express();
 let port = 4000;
-let url = "mongodb://127.0.0.1";
+// let url = "mongodb://127.0.0.1";
+let url = process.env.MONGO_URL;
+
+
 // app.use(express.limit(100000000));
 // app.use(express.bodyParser({ limit: '50mb' }));
 app.use(express.json({ limit: '500mb' }));

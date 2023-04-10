@@ -52,7 +52,8 @@ app.get("/drawboard/:id", async (req, res) => {
 
 })
 app.put("/drawboard/:id", async (req, res) => {
-    let result = await client.db("drawboard").collection("canvas").updateOne({ _id: ObjectId(req.params.id) }, req.body)
+    let result = await client.db("drawboard").collection("canvas").updateOne({ _id: new ObjectId(req.params.id) }, { "$set": req.body })
+    console.log(result);
 })
 app.delete("/drawboard/:id", async (req, res) => {
     let result = await client.db("drawboard").collection("canvas").deleteOne({ _id: ObjectId(req.params.id) })

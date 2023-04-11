@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient, ObjectId } from "mongodb"
 import cors from "cors";
 import * as dotenv from 'dotenv';
+import { log } from "console";
 dotenv.config()
 let app = express();
 let port = 4000;
@@ -13,7 +14,9 @@ let url = process.env.MONGO_URL;
 // app.use(express.bodyParser({ limit: '50mb' }));
 app.use(express.json({ limit: '500mb' }));
 // app.use(express.urlencoded({ limit: '50mb' }));
-
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*")
+// })
 let client = new MongoClient(url);
 await client.connect()
 
@@ -61,7 +64,14 @@ app.put("/drawboard/:id", async (req, res) => {
     }
 })
 app.delete("/drawboard/:id", async (req, res) => {
-    let result = await client.db("drawboard").collection("canvas").deleteOne({ _id: ObjectId(req.params.id) })
+    let result = await client.db("drawboard").collection("canvas").deleteOne({ _id: new ObjectId(req.params.id) })
+    if (result.deletedCount > 0) {
+        res.status(200).send(result)
+
+    } else {
+        res.status(404).send({ msg: "SOmething wrong" })
+
+    }
 })
 // comment
 
